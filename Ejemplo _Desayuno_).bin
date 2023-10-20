@@ -1,0 +1,27 @@
+Algoritmo Desayuno
+	//1. Preguntar por el precio del café, de la tostada y del zumo de naranja
+	Definir precioCafe, precioTostada, precioZumo Como Real
+	Definir cuenta, billete, cambio Como Real
+	precioCafe = 0
+	precioTostada = 0
+	precioZumo = 0
+	cuenta = 0
+	billete = 0
+	
+	Escribir '¿Cuál es el precio del café?'
+	Leer precioCafe
+	Escribir '¿Cuál es el precio de la tostada?'
+	Leer precioTostada
+	Escribir '¿Cuál es el precio del Zumo de naranja?'
+	Leer precioZumo
+	//2. Hacer la suma para calcular el precio total del desayuno
+	cuenta = precioCafe + precioTostada + precioZumo
+	Escribir "El costo de la cuenta es: " cuenta
+	//3. Suponiendo que tenemos solo un billete de 10 euros, calcular cuánto nos tienen que
+	//devolver
+	Escribir '¿Con qué cantidad vas a pagar?'
+	leer billete
+	cambio = billete - cuenta
+	Escribir "Tu cambio es de: " cambio
+	//--> PISTA: el coste total del desayuno puede ser mayor, igual o menor a 10 euros :-)
+FinAlgoritmo

@@ -1,0 +1,145 @@
+//Función que muestra el tablero que se le pasa como parámetro
+Funcion MostrarTablero(tableroJuego, dimen)
+	//1. Definir e inicializar variables
+	Definir fila, columna Como Entero
+	fila = 0 
+	columna = 0
+	
+	//2. Letrero
+	Escribir ""
+	Escribir " --------------------------------------------"
+	Escribir "| TABLERO - HUNDIR LA FLOTA |"
+	Escribir " --------------------------------------------"
+	Escribir ""
+	
+	//3. Mostrar el tablero de juego
+	para columna = 0 hasta dimen -1 Con Paso 1
+		para fila = 0 hasta dimen -1 Con Paso 1
+			Escribir tableroJuego[columna, fila], ' ' Sin Saltar
+		FinPara
+		Escribir ""
+	FinPara
+FinFuncion
+
+//Función que devuelve la dimension que tiene el tablero, en función del nivel de dificultad seleccionado por el usuario
+Funcion long = TamTablero(nivelDificultad)
+	//1. Definir e inicializar variables
+	Definir long Como Entero
+	long = 0
+	
+	//2. Obtenemos el tamaño del tablero, en función de la dificultad: 1 --> 3x3; 2 --> 4x4; 3 --> 5x5
+	si (nivelDificultad == 1) Entonces
+		long = 3
+	SiNo
+		si (nivelDificultad == 2) Entonces
+			long = 4
+		sino 
+			long = 5
+		FinSi
+	FinSi
+FinFuncion
+
+//Función que simula el juego, devolviendo el número de barcos hundidos por el usuario
+Funcion barcos = Jugar(tablero, long)
+	//1. Definir e inicializar variables
+	Definir barcos, intentos, filaUsuario, columnaUsuario Como Entero
+	barcos = 0
+	filaUsuario = 0
+	columnaUsuario = 0
+	intentos = 0 //Máximo de 5 intentos para hundir los barcos
+	
+	//2. Pedir filas y columnas tantas veces como número de intentos tengamos, y comprobar si es un barco
+	Mientras (intentos < 5) Hacer
+		//2.1. Pedir fila y columna
+		Esperar 1 Segundos
+		Escribir ''
+		Escribir 'Intento: ', intentos + 1
+		Esperar 1 Segundos
+		Escribir 'Introduce un número de fila  [0 - ', long - 1, ']'
+		leer filaUsuario 
+		Escribir 'Introduce un número de columna  [0 - ', long - 1, ']'
+		leer columnaUsuario
+		
+		//2.2. Comprobamos si en esa posición del tablero, hay un barco. De ser así, lo marcamos como hundido
+		si (tablero[columnaUsuario, filaUsuario] == 'B ') Entonces
+			Escribir 'Barco hundido!!'
+			tablero[columnaUsuario, filaUsuario] = 'H '
+			barcos = barcos + 1
+		SiNo
+			Escribir 'Agua :('
+		FinSi
+		//2.3. Incrementamos el número de intentos
+		intentos = intentos + 1
+		//2.4. Si ya hemos hundido todos los barcos, no hace falta que sigamos con más intentos y podemos acabar el bucle
+		si (barcos == 3) Entonces
+			intentos = 5
+		FinSi
+	FinMientras
+	
+	//3. Mostramos el tablero final, llamando a otra función
+	MostrarTablero(tablero, long)
+FinFuncion
+
+//Juego de Hundir la Flota
+Algoritmo HundirFlota
+	//1. Definir e inicializar variables
+	Definir tablero Como Texto
+	definir dificultad, dimen, columnas, filas, barcos, filaBarco, columnaBarco, barcosHundidos como entero 
+	dimen = 0
+	columnas = 0
+	filas = 0
+	barcosHundidos = 0
+	filaBarco = 0
+	columnaBarco = 0
+	dificultad = 0
+	barcos = 0
+	
+	Escribir "-------------------------------------------------"
+	Escribir "Bienvenido al juego Hundir la Flota!"
+	Escribir "-------------------------------------------------"
+	Escribir ""
+	Esperar 3 Segundos
+	
+	//2. Llamar a la función que establece el tamaño del tablero en función de la dificultad del juego
+	Escribir "Introduce la dificultad del juego: 1 (fácil) | 2 (medio) | 3 (alta)"
+	leer dificultad 
+	dimen = TamTablero(dificultad)
+	
+	//3. Dar dimensión al tablero
+	Dimension tablero[dimen, dimen]
+	
+	//4. Creamos el tablero
+	Escribir "Creando tablero..."
+	Esperar 1 segundos
+	//4.1. Rellenar el tablero de "agua" (texto "**")
+	para columnas = 0 hasta dimen - 1 Con Paso 1
+		para filas = 0 hasta dimen - 1 Con Paso 1
+			tablero[filas, columnas] = '**'
+		FinPara
+	FinPara
+	
+	//4.2. Poner los tres barcos, de forma aleatoria
+	para barcos = 0 hasta 2 Con Paso 1 
+		columnaBarco = azar(dimen)
+		filaBarco = azar(dimen)
+		si (tablero[columnaBarco, filaBarco] == '**') Entonces
+			tablero[columnaBarco, filaBarco] = 'B '
+		FinSi
+	FinPara
+	
+	Escribir "-----------------------------------------"
+	Escribir "--------- Tablero creado!! ---------"
+	Escribir "-----------------------------------------"
+	Escribir ""
+	
+	//5. Llamar a la función que ejecuta el juego
+	Escribir "Empieza el juego! Tienes 5 intentos para adivinar los 3 barcos. Suerte!! :-)"
+	barcosHundidos = Jugar(tablero, dimen)
+	
+	//6. Comprobamos si hemos ganado, en base del número de barcos hundidos devueltos por la función
+	si barcosHundidos = barcos Entonces
+		Escribir 'Has hundido todos los barcos del enemigo! Ganaste'
+	SiNo
+		Escribir 'Aún el enemigo tiene barcos a flote. Perdiste'
+	FinSi
+FinAlgoritmo
